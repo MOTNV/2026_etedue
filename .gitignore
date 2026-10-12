@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+models/
+runs/
+*.pt
+*.ts
+*.task
+data/raw/

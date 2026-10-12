@@ -1,0 +1,13 @@
+# 스캔앤고 모델 실습 (Python 3.10, CPU에서 동작 확인)
+ultralytics>=8.4      # YOLO26, YOLOE (첫 실행 시 clip 패키지 자동 설치)
+transformers>=5.0     # SigLIP 2
+torch
+sentencepiece
+protobuf
+rapidocr>=3.8         # OCR 기본 엔진 (PP-OCRv5 한국어)
+onnxruntime
+easyocr               # OCR 비교용 (--engine easy)
+mediapipe>=0.10       # 손 감지·제스처
+matplotlib
+numpy
+pillow

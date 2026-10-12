@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모델 검토 보고서 | 스캔앤고</title>
+  <meta name="description" content="YOLOE · DINO-X · SAM 3 · SigLIP 2 · OCR · MediaPipe 검토와 스캔앤고 적용 판단 (A안)">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap">
+  <style>
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --surface-2: #F1F5F9; --ink: #0F172A; --muted: #64748B;
+      --line: #E2E8F0; --primary: #1D4ED8; --cyan-ink: #0E7490;
+      --f-sans: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--f-sans); background: var(--bg); color: var(--ink); line-height: 1.75; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+    header { position: sticky; top: 0; z-index: 5; background: rgba(248,250,252,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    header .in { max-width: 920px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    header a { text-decoration: none; color: var(--ink); font-weight: 700; }
+    header a.back { color: var(--primary); font-weight: 600; font-size: .92rem; }
+    main { max-width: 920px; margin: 0 auto; padding: 40px 20px 80px; }
+    h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); letter-spacing: -.03em; line-height: 1.25; margin: 0 0 6px; }
+    h2 { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 1.5rem; letter-spacing: -.02em; }
+    h3 { margin-top: 32px; font-size: 1.15rem; }
+    a { color: var(--primary); }
+    blockquote { margin: 16px 0; padding: 12px 18px; border-left: 4px solid var(--primary); background: var(--surface); border-radius: 0 10px 10px 0; color: #334155; }
+    blockquote p { margin: 4px 0; }
+    code { font-family: var(--f-mono); font-size: .86em; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
+    pre { background: var(--ink); color: #E2E8F0; padding: 16px 18px; border-radius: 12px; overflow-x: auto; line-height: 1.55; }
+    pre code { background: none; padding: 0; color: inherit; }
+    .tw { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; min-width: 560px; }
+    th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    thead th { background: var(--surface-2); color: var(--muted); font-size: .8rem; white-space: nowrap; }
+    hr { border: 0; }
+    ul.contains-task-list, li.task-list-item { list-style: none; }
+    .mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; overflow-x: auto; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .state { color: var(--muted); padding: 40px 0; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --bg: #0B1120; --surface: #111827; --surface-2: #1E293B; --ink: #E2E8F0; --muted: #94A3B8; --line: #1E293B; --primary: #60A5FA; }
+      :root:not([data-theme="light"]) pre { background: #020617; }
+      :root:not([data-theme="light"]) blockquote { color: #CBD5E1; }
+    }
+    :root[data-theme="dark"] { --bg: #0B1120; --surface: #111827; --surface-2: #1E293B; --ink: #E2E8F0; --muted: #94A3B8; --line: #1E293B; --primary: #60A5FA; }
+  </style>
+</head>
+<body>
+  <header><div class="in"><a href="../index.html">SCAN&amp;GO · 모델 검토 보고서</a><a class="back" href="../index.html#models">← 홈페이지</a></div></header>
+  <main>
+    <article id="doc"><p class="state">보고서를 불러오는 중…</p></article>
+    <p class="meta">원문: <a href="REPORT_zero-shot-models.md">REPORT_zero-shot-models.md</a> · 사진 출처: <a href="CREDITS.md">CREDITS.md</a></p>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    (async function () {
+      var el = document.getElementById('doc');
+      try {
+        var md = await (await fetch('REPORT_zero-shot-models.md', { cache: 'no-cache' })).text();
+        el.innerHTML = marked.parse(md, { gfm: true });
+        // 표는 가로 스크롤 래퍼로 감싼다
+        el.querySelectorAll('table').forEach(function (t) {
+          var w = document.createElement('div'); w.className = 'tw';
+          t.parentNode.insertBefore(w, t); w.appendChild(t);
+        });
+        // ```mermaid 코드블록 -> 다이어그램
+        el.querySelectorAll('pre code.language-mermaid').forEach(function (c) {
+          var d = document.createElement('div'); d.className = 'mermaid'; d.textContent = c.textContent;
+          c.parentNode.replaceWith(d);
+        });
+        var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+        mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+        await mermaid.run();
+      } catch (e) {
+        el.innerHTML = '<p class="state">보고서를 불러오지 못했습니다. <a href="REPORT_zero-shot-models.md">원문 보기</a></p>';
+      }
+    })();
+  </script>
+</body>
+</html>

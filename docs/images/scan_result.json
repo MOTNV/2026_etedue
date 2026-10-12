@@ -1,0 +1,117 @@
+{
+  "source": "tray_demo.jpg",
+  "lines": [
+    {
+      "box": [
+        703,
+        73,
+        846,
+        477
+      ],
+      "sku": "CHILSUNG_CIDER",
+      "name": "칠성사이다 500ml",
+      "price": 2000,
+      "status": "ok",
+      "how": "이미지",
+      "top1": "CHILSUNG_CIDER",
+      "sim": 0.961,
+      "margin": 0.275,
+      "ocr": null
+    },
+    {
+      "box": [
+        71,
+        86,
+        333,
+        455
+      ],
+      "sku": "BANANA_MILK",
+      "name": "바나나맛우유 240ml",
+      "price": 1700,
+      "status": "ok",
+      "how": "이미지+글자",
+      "top1": "BANANA_MILK",
+      "sim": 0.933,
+      "margin": 0.185,
+      "ocr": [
+        "6병그레",
+        "Srcea",
+        "바나나앗오",
+        "11.12 070F1",
+        "1108"
+      ]
+    },
+    {
+      "box": [
+        382,
+        85,
+        642,
+        455
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "글자 불일치",
+      "top1": "BANANA_MILK",
+      "sim": 0.886,
+      "margin": 0.167,
+      "ocr": [
+        "6병그레",
+        "딸기앗우요",
+        "1112 074F4",
+        "수IR"
+      ]
+    },
+    {
+      "box": [
+        901,
+        520,
+        1363,
+        845
+      ],
+      "sku": "CHOCO_PIE",
+      "name": "초코파이 1개입",
+      "price": 600,
+      "status": "ok",
+      "how": "이미지 (글자 확인 불가)",
+      "top1": "CHOCO_PIE",
+      "sim": 0.765,
+      "margin": 0.14,
+      "ocr": [
+        "NOIYO.",
+        "2022 05 31 C10",
+        "77",
+        "2022 05 31 C10",
+        "NOIYO."
+      ]
+    },
+    {
+      "box": [
+        102,
+        566,
+        533,
+        935
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "미등록 상품",
+      "top1": "CHOCO_PIE",
+      "sim": 0.702,
+      "margin": 0.016,
+      "ocr": null
+    }
+  ],
+  "total": 4300,
+  "timing_ms": {
+    "1_hands": 65,
+    "2_yoloe": 102,
+    "3_siglip": 584,
+    "4_ocr": 1845
+  },
+  "total_ms": 2596,
+  "device": "CPU (개발 PC)",
+  "siglip": "google/siglip2-base-patch16-224"
+}
