@@ -10,17 +10,11 @@
 """
 import json
 import random
-import re
-import time
-import urllib.parse
-import urllib.request
 
 from PIL import Image, ImageFilter
 
-from common import DATA, GALLERY, ROOT, SAMPLES
-
-RAW = DATA / "raw"
-UA = {"User-Agent": "scanandgo-edu/0.1 (student project)"}
+from common import GALLERY, ROOT, SAMPLES
+from commons import RAW, download, write_credits
 
 # 파일명 -> Commons 원본 제목
 SOURCES = {
@@ -54,43 +48,24 @@ TRAY_ITEMS = [
 ]
 
 
-def fetch(url):
-    for i in range(5):
-        try:
-            return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60).read()
-        except Exception:
-            time.sleep(3 * (i + 1))
-    raise RuntimeError(f"다운로드 실패: {url}")
+SLOTS = [(60, 80), (380, 80), (700, 60), (900, 520), (100, 560)]
+HEIGHTS = [380, 380, 420, 330, 380]
 
 
-def download():
-    RAW.mkdir(parents=True, exist_ok=True)
-    meta_file = RAW / "credits.json"
-    meta = json.loads(meta_file.read_text(encoding="utf-8")) if meta_file.exists() else {}
-    for key, title in SOURCES.items():
-        if (RAW / f"{key}.jpg").exists() and key in meta:
-            continue
-        q = urllib.parse.quote("File:" + title)
-        api = ("https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json"
-               f"&iiprop=url|extmetadata&iiurlwidth=960&titles={q}")
-        info = list(json.loads(fetch(api))["query"]["pages"].values())[0]["imageinfo"][0]
-        m = info["extmetadata"]
-        (RAW / f"{key}.jpg").write_bytes(fetch(info["thumburl"]))
-        meta[key] = {
-            "title": title,
-            "author": re.sub("<[^>]+>", "", m.get("Artist", {}).get("value", "?")).strip(),
-            "license": m.get("LicenseShortName", {}).get("value", "?"),
-            "url": info["descriptionurl"],
-        }
-        print("다운로드:", title)
-        time.sleep(2)
-    meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-    return meta
+def fit(img, h):
+    img = img.resize((int(img.width * h / img.height), h))
+    if img.width > 620:
+        img = img.resize((620, int(img.height * 620 / img.width)))
+    return img
 
 
-def crop(key, box):
-    im = Image.open(RAW / f"{key}.jpg").convert("RGB")
-    return im.crop(box) if box else im
+def tray_boxes(items):
+    """합성 계산대 사진의 정답 박스 [(이름, x1, y1, x2, y2)] (회전은 ±3도라 무시)"""
+    out = []
+    for (x, y), h, (name, img) in zip(SLOTS, HEIGHTS, items):
+        w, hh = fit(img, h).size
+        out.append((name, x, y, x + w, y + hh))
+    return out
 
 
 def make_tray(items, size=(1600, 1000), seed=7):
@@ -99,12 +74,8 @@ def make_tray(items, size=(1600, 1000), seed=7):
     tray = Image.new("RGB", size, (206, 210, 216))
     noise = Image.effect_noise(size, 18).convert("RGB")
     tray = Image.blend(tray, noise, 0.08)
-    slots = [(60, 80), (380, 80), (700, 60), (900, 520), (100, 560)]
-    heights = [380, 380, 420, 330, 380]
-    for (x, y), h, (name, img) in zip(slots, heights, items):
-        img = img.resize((int(img.width * h / img.height), h))
-        if img.width > 620:
-            img = img.resize((620, int(img.height * 620 / img.width)))
+    for (x, y), h, (name, img) in zip(SLOTS, HEIGHTS, items):
+        img = fit(img, h)
         shadow = Image.new("RGBA", (img.width + 30, img.height + 30), (0, 0, 0, 0))
         shadow.paste((0, 0, 0, 90), (15, 15, img.width + 15, img.height + 15))
         shadow = shadow.filter(ImageFilter.GaussianBlur(10))
@@ -114,7 +85,7 @@ def make_tray(items, size=(1600, 1000), seed=7):
 
 
 def main():
-    meta = download()
+    meta = download(SOURCES)
 
     for sku, key, box in GALLERY_CROPS:
         (GALLERY / sku).mkdir(parents=True, exist_ok=True)
@@ -130,16 +101,12 @@ def main():
         truth[name] = sku
     (items_dir / "truth.json").write_text(json.dumps(truth, indent=2), encoding="utf-8")
     make_tray(items).save(SAMPLES / "tray_demo.jpg", quality=92)
+    (SAMPLES / "tray_demo_boxes.json").write_text(json.dumps(tray_boxes(items), indent=2), encoding="utf-8")
 
     for key in ("thumb_up", "open_palm"):
         Image.open(RAW / f"{key}.jpg").convert("RGB").save(SAMPLES / f"hand_{key}.jpg", quality=92)
 
-    lines = ["# 사진 출처", "", "실습용 사진은 모두 Wikimedia Commons의 자유 라이선스 이미지를 잘라 쓰거나 합성했습니다.",
-             "`data/samples/tray_demo.jpg`와 결과 이미지들은 아래 사진을 합성·가공한 2차 저작물이며 원 라이선스를 따릅니다.", "",
-             "| 파일 | 원본 | 저작자 | 라이선스 |", "|---|---|---|---|"]
-    for key, m in meta.items():
-        lines.append(f"| `{key}.jpg` | [{m['title']}]({m['url']}) | {m['author']} | {m['license']} |")
-    (ROOT / "docs" / "CREDITS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_credits(meta, ROOT / "docs" / "CREDITS.md")
     print("완료: data/gallery, data/samples, docs/CREDITS.md")
 
 

@@ -491,10 +491,12 @@
     h3.sub { margin-top: 56px; font-size: 1.25rem; }
     .shots { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .verdict a { color: #67E8F9; }
+    .pipe-3 { grid-template-columns: repeat(3, 1fr); margin-top: 24px; margin-bottom: 20px; }
+    #models .verdict { margin-top: 24px; }
     .foot-links { margin-top: 6px; }
     .foot-links a { color: #CBD5E1; }
     @media (max-width: 980px) { .pipe { grid-template-columns: repeat(2, 1fr); } .pipe .done { grid-column: span 2; } .real { grid-template-columns: 1fr; } }
-    @media (max-width: 760px) { .pipe, .shots { grid-template-columns: 1fr; } .pipe .done { grid-column: auto; } }
+    @media (max-width: 760px) { .pipe, .pipe-3, .shots { grid-template-columns: 1fr; } .pipe .done { grid-column: auto; } }
 
     /* ----- 모바일 화면 ----- */
     @media (max-width: 980px) {
@@ -702,7 +704,7 @@
           <figure class="card shot"><img src="docs/images/tray_yolo26.jpg" alt="YOLO26n 결과: 우유와 사이다는 bottle, 초코파이는 book으로 검출하고 삼각김밥은 놓침" loading="lazy" width="1600" height="1000"><figcaption><b>기존 YOLO26n (COCO 80클래스)</b> — 상품을 <code>bottle</code>로만 알고, 초코파이는 <code>book</code> 0.36, 삼각김밥은 놓쳤습니다.</figcaption></figure>
           <figure class="card shot"><img src="docs/images/tray_yoloe.jpg" alt="YOLOE 결과: 5개 상품을 모두 검출" loading="lazy" width="1600" height="1000"><figcaption><b>YOLOE 텍스트 프롬프트</b> — 학습 없이 5개를 모두 찾았습니다. 삼각김밥은 <code>seaweed wrapped rice</code> 0.16으로 약해서 기준을 0.15로 낮췄습니다.</figcaption></figure>
           <figure class="card shot"><img src="docs/images/siglip_similarity.png" alt="SigLIP 2 유사도 행렬. 바나나우유 0.93, 칠성사이다 0.97, 초코파이 0.76이 대각선에서 가장 높고, 딸기우유는 바나나우유와 0.89" loading="lazy" width="1125" height="600"><figcaption><b>SigLIP 2 유사도</b> — 등록 사진과 다른 사진인데도 정답 칸이 가장 높습니다. 다만 미등록 딸기우유가 바나나우유와 0.89로 위험할 만큼 높습니다.</figcaption></figure>
-          <figure class="card shot"><img src="docs/images/ocr_label.jpg" alt="OCR 결과: 바나나우유에서 바나나앗오, 딸기우유에서 딸기앗우유, 초코파이 중국판에서 날짜만 읽음" loading="lazy" width="1231" height="420"><figcaption><b>OCR 교차 확인 (RapidOCR · PP-OCRv5 한국어)</b> — "바나나"와 "딸기"를 읽어 두 우유를 구분합니다. 같은 사진에서 EasyOCR은 로고 글자를 읽지 못했습니다.</figcaption></figure>
+          <figure class="card shot"><img src="docs/images/ocr_label.jpg" alt="OCR 결과: 바나나우유에서 바나나앗으, 딸기우유에서 딸기앗우유, 중국판 초코파이에서는 날짜만 읽음" loading="lazy" width="1231" height="420"><figcaption><b>OCR 교차 확인 (RapidOCR · PP-OCRv5 한국어)</b> — "바나나"와 "딸기"를 읽어 두 우유를 구분합니다. 같은 사진에서 EasyOCR은 로고 글자를 읽지 못했습니다.</figcaption></figure>
           <figure class="card shot"><img src="docs/images/conf_chart.png" alt="YOLOE 검출 신뢰도 막대그래프: bottle 0.93, 0.77, 0.72, snack package 0.34, seaweed wrapped rice 0.16, 기준선 0.15" loading="lazy" width="1050" height="480"><figcaption><b>YOLOE 신뢰도</b> — 계산대에서는 상품을 놓치는 쪽이 더 위험하므로 후보를 넓게 받고, 판별은 다음 단계에 맡깁니다.</figcaption></figure>
           <figure class="card shot"><img src="docs/images/gesture.jpg" alt="MediaPipe 손 랜드마크: 엄지척은 Thumb_Up 0.75로 결제 진행, 겹친 손바닥은 손 감지로 인식 대기" loading="lazy" width="1056" height="480"><figcaption><b>MediaPipe 손 21점</b> — <code>Thumb_Up</code> 0.75는 결제 진행, 제스처가 없는 손은 "아직 올리는 중"으로 보고 인식을 미룹니다.</figcaption></figure>
         </div>
@@ -712,7 +714,7 @@
           <table>
             <thead><tr><th scope="col">모델</th><th scope="col">스캔앤고에서 맡는 일</th><th scope="col">결정</th><th scope="col">이유</th></tr></thead>
             <tbody>
-              <tr><th scope="row">YOLO26</th><td>(기존) 상품 2,000종 분류 검출</td><td><span class="win cloud">역할 축소</span></td><td>상품이 COCO 밖이라 커스텀 학습 필수, 매주 재학습·250MB 배포 부담. 장기적으로 '상품' 1클래스 검출기로 다시 쓸 수 있음</td></tr>
+              <tr><th scope="row">YOLO26</th><td>(기존) 상품 2,000종 분류 검출</td><td><span class="win cloud">역할 축소</span></td><td>상품이 COCO 밖이라 커스텀 학습 필수, 매주 재학습·250MB 배포 부담. '상품' 1클래스 검출기로 직접 학습해 봤지만 아직 YOLOE보다 낮음 (아래)</td></tr>
               <tr><th scope="row">YOLOE</th><td>상품 위치 찾기</td><td><span class="win edge">적용</span></td><td>라벨 0장으로 5개 모두 검출. 한국 특화 상품(김밥)은 약함</td></tr>
               <tr><th scope="row">SigLIP 2</th><td>등록 사진과 비교해 상품 판별</td><td><span class="win edge">적용</span></td><td>신상품 = 사진 등록. 매주 배포량이 모델 250MB → 임베딩 약 0.4MB</td></tr>
               <tr><th scope="row">OCR</th><td>포장지 글자로 교차 확인</td><td><span class="win edge">적용</span></td><td>용기가 같은 상품의 오인식을 바코드 요청으로 돌림</td></tr>
@@ -722,9 +724,39 @@
             </tbody>
           </table>
         </div>
+        <h3 class="sub">직접 학습도 해 봤습니다: YOLO26 '상품' 검출기</h3>
+        <p class="lead" style="margin-top:10px">YOLOE가 삼각김밥을 0.16으로 겨우 잡아서, 상품의 위치만 찾는 YOLO26n을 직접 학습해 비교했습니다. 박스는 사람이 그리지 않고 YOLOE 분할 마스크로 상품을 오려 내 자동 라벨링했습니다.</p>
+        <ol class="pipe pipe-3">
+          <li class="card"><span class="mono">01 · AUTO LABEL</span><h3>상품 오려 내기</h3><p>공개 사진 32장(상품 19장, 상품이 아닌 음식 13장)에서 YOLOE 마스크로 상품 32조각을 오려 내고, 사람이 확인해 25조각만 남겼습니다.</p><b class="num">25<small>조각</small></b></li>
+          <li class="card"><span class="mono">02 · SYNTHESIZE</span><h3>학습 사진 합성</h3><p>무작위 배경 위에 상품 2~6개를 붙이고 음식 사진 조각을 방해물로 넣었습니다. 박스 라벨은 붙인 위치에서 자동 계산합니다.</p><b class="num">700<small>장</small></b></li>
+          <li class="card"><span class="mono">03 · TRAIN</span><h3>YOLO26n 전이학습</h3><p>COCO 사전학습 가중치에서 1클래스로 30에폭, 512px. 개발 PC CPU로 약 1시간 걸렸습니다.</p><b class="num">30<small>epoch</small></b></li>
+        </ol>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">검출기</th><th scope="col">합성 검증</th><th scope="col">실제 사진 AP@0.5</th><th scope="col">정밀도</th><th scope="col">재현율</th><th scope="col">속도 (CPU)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">YOLO26n (COCO, 학습 없음)</th><td>–</td><td class="num-cell">0.83</td><td class="num-cell">0.68</td><td class="num-cell">0.88</td><td class="num-cell">44 ms</td></tr>
+              <tr><th scope="row">YOLOE (제로샷)</th><td>–</td><td class="num-cell"><b>0.997</b></td><td class="num-cell"><b>1.00</b></td><td class="num-cell"><b>0.94</b></td><td class="num-cell">98 ms</td></tr>
+              <tr><th scope="row">YOLO26n-product (직접 학습)</th><td class="num-cell">0.995</td><td class="num-cell">0.86</td><td class="num-cell">0.71</td><td class="num-cell">0.88</td><td class="num-cell"><b>30 ms</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fineprint">평가는 학습에 쓰지 않은 사진 11장(정답 박스 17개, 사람이 표시)으로 했습니다. 합성 계산대 1장, 실제 상품 사진 7장(학습에 없던 삼각김밥 포함), 상품이 없는 음식 사진 3장입니다.</p>
+        <div class="shots">
+          <figure class="card shot"><img src="docs/images/eval_examples.jpg" alt="검출기 3종 예시. 학습한 모델은 삼각김밥에서 상품 전체 대신 빨간 스티커 두 개를 잡았고, 조리한 라면 사진에서 COCO 모델은 오검출 2개, 나머지는 0개" loading="lazy" width="920" height="1240"><figcaption><b>같은 사진, 다른 검출기</b> — 학습한 모델은 삼각김밥에서 상품 전체가 아니라 빨간 스티커를 잡았고, 초코파이는 박스 두 개로 쪼갰습니다. 대신 음식 사진에서는 오검출이 없었습니다.</figcaption></figure>
+          <div>
+            <figure class="card shot"><img src="docs/images/detector_compare.png" alt="막대그래프: AP@0.5는 COCO 0.83, YOLOE 1.00, 학습 모델 0.86" loading="lazy" width="1200" height="540"><figcaption><b>실제 사진 성능</b> — 직접 학습한 모델은 COCO 모델보다 낫지만 YOLOE에는 못 미칩니다.</figcaption></figure>
+            <figure class="card shot" style="margin-top:20px"><img src="docs/images/train_results.png" alt="학습 곡선: 손실은 꾸준히 줄고 합성 검증 mAP50은 몇 에폭 만에 0.995에 도달" loading="lazy" width="2400" height="1200"><figcaption><b>학습 곡선</b> — 합성 검증 점수는 몇 에폭 만에 0.995에 닿았습니다. 실제 사진에서 0.86으로 떨어진 것은 합성 데이터에 과적합했다는 뜻입니다.</figcaption></figure>
+          </div>
+        </div>
+        <div class="verdict">
+          <span class="mono">RESULT</span>
+          <p><b>상품 위치는 계속 YOLOE가 찾습니다.</b> 학습한 모델로 전체 파이프라인을 돌리면 합계가 3,700원(정답 4,300원)으로 틀렸습니다. 상품 조각 25개로는 다양성이 부족했기 때문입니다. 속도는 YOLOE보다 3배 빠르므로, PoC에서 실제 매장 트레이 사진 수백 장을 YOLOE로 자동 라벨링하고 사람이 검수해 다시 학습한 뒤, 같은 평가에서 YOLOE를 넘으면 바꿉니다.</p>
+        </div>
+
         <div class="verdict">
           <span class="mono">LIMITS</span>
-          <p><b>아직 남은 과제도 그대로 적었습니다.</b> 판정 기준은 공개 사진 5개로 정한 값이라 PoC 매장 사진으로 다시 맞춰야 합니다. CPU에서는 2.6초로 목표(1초)보다 느리고, YOLOE는 AGPL-3.0이라 상용 배포 전에 라이선스를 해결해야 합니다. 실습 사진은 Wikimedia Commons 자유 라이선스 사진을 합성했습니다 (<a href="docs/CREDITS.md">출처</a>).</p>
+          <p><b>아직 남은 과제도 그대로 적었습니다.</b> 판정 기준은 공개 사진 5개로 정한 값이라 PoC 매장 사진으로 다시 맞춰야 합니다. CPU에서는 2.6초로 목표(1초)보다 느리고, 직접 학습한 검출기는 아직 YOLOE를 넘지 못했으며, YOLOE는 AGPL-3.0이라 상용 배포 전에 라이선스를 해결해야 합니다. 실습 사진은 Wikimedia Commons 자유 라이선스 사진을 합성했습니다 (<a href="docs/CREDITS.md">출처</a>).</p>
         </div>
         <div class="actions" style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
           <a class="button" href="docs/report.html">모델 검토 보고서 읽기 →</a>

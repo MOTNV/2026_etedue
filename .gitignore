@@ -6,3 +6,6 @@ runs/
 *.ts
 *.task
 data/raw/
+data/train/images/
+data/train/labels/
+data/train/product.yaml

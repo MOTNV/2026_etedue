@@ -6,8 +6,8 @@
   4. OCR         유사도가 애매하면 포장지 글자로 교차 확인한다 (예: 바나나우유 vs 딸기우유)
   5. 미등록·불일치 상품은 바코드 스캔으로 넘긴다
 
-  python src/scan_and_go.py [--source data/samples/tray_demo.jpg]
-결과: docs/images/scan_result.jpg, docs/images/scan_result.json (홈페이지에서 읽음)
+  python src/scan_and_go.py [--source data/samples/tray_demo.jpg] [--detector yoloe|product]
+결과: docs/images/scan_result.jpg/.json (YOLOE), scan_result_product.jpg/.json (직접 학습한 YOLO26n)
 """
 import argparse
 import json
@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from common import INDEX, OUT, SAMPLES, draw_boxes, load_catalog, open_rgb
+from common import INDEX, MODELS, OUT, SAMPLES, draw_boxes, load_catalog, open_rgb
 from detect_text_yoloe import PRODUCT_PROMPTS, load_yoloe
 from siglip_embed import SigLIP, load_index
 
@@ -24,7 +24,8 @@ SURE = 0.95        # 이 이상 + 차이가 크면 OCR 없이 확정
 SURE_MARGIN = 0.15
 MIN_SIM = 0.75     # 이 미만이면 미등록 상품으로 본다
 MIN_MARGIN = 0.05  # 1, 2위 상품 유사도 차이가 이보다 작으면 헷갈리는 것으로 본다
-DET_KEEP = 0.15    # YOLOE 상품 후보 채택 기준 (놓치는 것보다 후보가 많은 편이 안전)
+DET_KEEP = {"yoloe": 0.15,    # YOLOE 상품 후보 채택 기준 (놓치는 것보다 후보가 많은 편이 안전)
+            "product": 0.25}  # 직접 학습한 YOLO26n-product (train_yolo26.py)
 
 COLORS = {"ok": "#1D4ED8", "barcode": "#D97706"}
 
@@ -49,6 +50,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--source", default=str(SAMPLES / "tray_demo.jpg"))
     p.add_argument("--no-hands", action="store_true", help="손 확인 단계 생략")
+    p.add_argument("--detector", default="yoloe", choices=["yoloe", "product"],
+                   help="상품 위치 검출기: yoloe(제로샷) 또는 product(직접 학습한 YOLO26n)")
     args = p.parse_args()
 
     catalog = load_catalog()
@@ -57,7 +60,13 @@ def main():
     cols = list(dict.fromkeys(skus))
 
     # 모델 로드 (매장 AI 박스에서는 부팅 시 한 번)
-    yoloe = load_yoloe(PRODUCT_PROMPTS)
+    if args.detector == "yoloe":
+        det = load_yoloe(PRODUCT_PROMPTS)
+        det_kw = {"agnostic_nms": True}
+    else:
+        from ultralytics import YOLO
+        det = YOLO(str(MODELS / "yolo26n-product.pt"))
+        det_kw = {}
     enc = SigLIP(ckpt)
     from ocr_label import check, read_text
     if not args.no_hands:
@@ -66,7 +75,7 @@ def main():
     img = open_rgb(args.source)
     bgr = np.array(img)[:, :, ::-1]  # ultralytics는 numpy 입력을 BGR로 받는다
     # 워밍업 (첫 호출은 느리므로 측정에서 뺀다)
-    yoloe.predict(bgr, verbose=False)
+    det.predict(bgr, verbose=False)
     enc.images([img])
     read_text(img.crop((0, 0, 64, 64)))
     T = Timer()
@@ -78,8 +87,8 @@ def main():
             print(f"손 {n_hands}개 감지 -> 상품을 다 올릴 때까지 대기")
             return
 
-    with T("2_yoloe"):
-        r = yoloe.predict(bgr, conf=DET_KEEP, agnostic_nms=True, verbose=False)[0]
+    with T(f"2_{args.detector}"):
+        r = det.predict(bgr, conf=DET_KEEP[args.detector], verbose=False, **det_kw)[0]
     boxes = r.boxes.xyxy.tolist()
 
     crops = [img.crop(tuple(map(int, b))) for b in boxes]
@@ -135,8 +144,9 @@ def main():
     print(f"  합계 {total:,}원  / 인식 {sum(l['status'] == 'ok' for l in lines)}개, 바코드 {sum(l['status'] != 'ok' for l in lines)}개")
     print("단계별 시간(ms, CPU): " + ", ".join(f"{k} {v:.0f}" for k, v in sorted(T.ms.items())) + f" = {total_ms:.0f}")
 
-    draw_boxes(img, dets, size=26).save(OUT / "scan_result.jpg", quality=88)
-    (OUT / "scan_result.json").write_text(json.dumps({
+    suffix = "" if args.detector == "yoloe" else "_product"
+    draw_boxes(img, dets, size=26).save(OUT / f"scan_result{suffix}.jpg", quality=88)
+    (OUT / f"scan_result{suffix}.json").write_text(json.dumps({"detector": args.detector,
         "source": str(args.source).replace("\\", "/").split("/")[-1], "lines": lines, "total": total,
         "timing_ms": {k: round(v) for k, v in sorted(T.ms.items())}, "total_ms": round(total_ms),
         "device": "CPU (개발 PC)", "siglip": ckpt,

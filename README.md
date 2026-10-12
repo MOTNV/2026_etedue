@@ -35,6 +35,18 @@ python src/ocr_label.py           # 포장지 OCR (--engine easy 로 EasyOCR 비
 python src/gesture_recognizer.py  # 손 감지·제스처
 ```
 
+### 모델 학습 (YOLO26 '상품' 검출기)
+
+```bash
+python src/make_train_data.py cutouts   # YOLOE 마스크로 상품 자동 라벨링 -> data/train/cutouts_sheet.jpg 확인
+python src/make_train_data.py synth     # 합성 학습 데이터 700장
+python src/train_yolo26.py              # YOLO26n 1클래스 전이학습 (CPU 약 1시간, GPU면 --device 0)
+python src/eval_detectors.py            # 학습에 안 쓴 사진 11장으로 YOLO26(COCO)·YOLOE·학습 모델 비교
+python src/scan_and_go.py --detector product   # 학습한 검출기로 전체 파이프라인
+```
+
+결과: 실제 사진 AP@0.5 기준 YOLOE 0.997 > 학습 모델 0.86 > COCO 0.83. 지금은 YOLOE를 유지한다 (보고서 3.5절).
+
 가중치(YOLO26, YOLOE, SigLIP 2, OCR, MediaPipe)는 첫 실행 때 자동으로 내려받아 `models/`와 Hugging Face 캐시에 저장됩니다.
 
 ### 신상품 등록

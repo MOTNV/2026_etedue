@@ -1,0 +1,13 @@
+[
+  {"name": "tray_demo", "image": "samples/tray_demo.jpg", "boxes": "tray", "note": "합성 계산대 (상품 5개)"},
+  {"name": "banana_a", "image": "raw/banana_a.jpg", "boxes": [[30, 150, 252, 462], [262, 150, 482, 462], [484, 150, 700, 462], [705, 150, 928, 462]], "note": "실제 사진, 우유 4종"},
+  {"name": "cider_b", "image": "raw/cider_b.jpg", "boxes": [[175, 268, 265, 530], [262, 272, 342, 530], [338, 262, 428, 525]], "note": "실제 사진, 작은 페트병 3개"},
+  {"name": "kimbap", "image": "raw/kimbap.jpg", "boxes": [[95, 190, 958, 945]], "note": "학습에 없던 종류"},
+  {"name": "chocopie_cn", "image": "raw/chocopie_cn.jpg", "boxes": [[20, 0, 935, 650]], "note": "중국판 포장"},
+  {"name": "te_yakult_china", "image": "raw/te_yakult_china.jpg", "boxes": [[88, 110, 462, 830]], "note": "중국판 요구르트"},
+  {"name": "te_pocari_cn", "image": "raw/te_pocari_cn.jpg", "boxes": [[265, 105, 540, 1050]], "note": "중국판 포카리"},
+  {"name": "te_grape_ade_2", "image": "raw/te_grape_ade_2.jpg", "boxes": [[0, 80, 905, 495]], "note": "손에 든 캔"},
+  {"name": "te_shin_3", "image": "raw/te_shin_3.jpg", "boxes": [], "note": "상품 없음 (조리한 라면)"},
+  {"name": "te_ggul_4", "image": "raw/te_ggul_4.jpg", "boxes": [], "note": "상품 없음 (과자 내용물)"},
+  {"name": "te_jjondeugi_2", "image": "raw/te_jjondeugi_2.jpg", "boxes": [], "note": "상품 없음 (과자)"}
+]

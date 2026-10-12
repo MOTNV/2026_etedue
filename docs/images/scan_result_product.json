@@ -1,0 +1,130 @@
+{
+  "detector": "product",
+  "source": "tray_demo.jpg",
+  "lines": [
+    {
+      "box": [
+        63,
+        88,
+        334,
+        457
+      ],
+      "sku": "BANANA_MILK",
+      "name": "바나나맛우유 240ml",
+      "price": 1700,
+      "status": "ok",
+      "how": "이미지+글자",
+      "top1": "BANANA_MILK",
+      "sim": 0.921,
+      "margin": 0.169,
+      "ocr": [
+        "6병그레",
+        "Srce",
+        "바나나앗으",
+        "D",
+        "11.12 07NF",
+        "108"
+      ]
+    },
+    {
+      "box": [
+        379,
+        83,
+        644,
+        461
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "글자 불일치",
+      "top1": "BANANA_MILK",
+      "sim": 0.868,
+      "margin": 0.163,
+      "ocr": [
+        "6빙그레",
+        "딸기앗우유",
+        "1112 074F4",
+        "4I"
+      ]
+    },
+    {
+      "box": [
+        699,
+        71,
+        848,
+        486
+      ],
+      "sku": "CHILSUNG_CIDER",
+      "name": "칠성사이다 500ml",
+      "price": 2000,
+      "status": "ok",
+      "how": "이미지",
+      "top1": "CHILSUNG_CIDER",
+      "sim": 0.971,
+      "margin": 0.288,
+      "ocr": null
+    },
+    {
+      "box": [
+        925,
+        520,
+        1358,
+        793
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "미등록 상품",
+      "top1": "CHOCO_PIE",
+      "sim": 0.727,
+      "margin": 0.145,
+      "ocr": null
+    },
+    {
+      "box": [
+        260,
+        749,
+        368,
+        860
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "미등록 상품",
+      "top1": "CHOCO_PIE",
+      "sim": 0.646,
+      "margin": 0.039,
+      "ocr": null
+    },
+    {
+      "box": [
+        919,
+        716,
+        1352,
+        849
+      ],
+      "sku": null,
+      "name": null,
+      "price": null,
+      "status": "barcode",
+      "how": "미등록 상품",
+      "top1": "CHOCO_PIE",
+      "sim": 0.739,
+      "margin": 0.129,
+      "ocr": null
+    }
+  ],
+  "total": 3700,
+  "timing_ms": {
+    "1_hands": 528,
+    "2_product": 27,
+    "3_siglip": 626,
+    "4_ocr": 917
+  },
+  "total_ms": 2097,
+  "device": "CPU (개발 PC)",
+  "siglip": "google/siglip2-base-patch16-224"
+}

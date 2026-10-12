@@ -1,0 +1,232 @@
+{
+  "n_images": 11,
+  "n_gt": 17,
+  "iou": 0.5,
+  "results": {
+    "YOLO26n (COCO)": {
+      "conf": 0.25,
+      "precision": 0.6818181818181818,
+      "recall": 0.8823529411764706,
+      "ap50": 0.8273464064770293,
+      "ms": 44.19211818127554,
+      "per_image": [
+        {
+          "image": "tray_demo",
+          "gt": 5,
+          "tp": 4,
+          "fp": 0
+        },
+        {
+          "image": "banana_a",
+          "gt": 4,
+          "tp": 4,
+          "fp": 0
+        },
+        {
+          "image": "cider_b",
+          "gt": 3,
+          "tp": 3,
+          "fp": 0
+        },
+        {
+          "image": "kimbap",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "chocopie_cn",
+          "gt": 1,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_yakult_china",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_pocari_cn",
+          "gt": 1,
+          "tp": 1,
+          "fp": 1
+        },
+        {
+          "image": "te_grape_ade_2",
+          "gt": 1,
+          "tp": 1,
+          "fp": 3
+        },
+        {
+          "image": "te_shin_3",
+          "gt": 0,
+          "tp": 0,
+          "fp": 2
+        },
+        {
+          "image": "te_ggul_4",
+          "gt": 0,
+          "tp": 0,
+          "fp": 1
+        },
+        {
+          "image": "te_jjondeugi_2",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        }
+      ]
+    },
+    "YOLOE (제로샷)": {
+      "conf": 0.15,
+      "precision": 1.0,
+      "recall": 0.9411764705882353,
+      "ap50": 0.9967320261437909,
+      "ms": 98.15760909094189,
+      "per_image": [
+        {
+          "image": "tray_demo",
+          "gt": 5,
+          "tp": 5,
+          "fp": 0
+        },
+        {
+          "image": "banana_a",
+          "gt": 4,
+          "tp": 4,
+          "fp": 0
+        },
+        {
+          "image": "cider_b",
+          "gt": 3,
+          "tp": 3,
+          "fp": 0
+        },
+        {
+          "image": "kimbap",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "chocopie_cn",
+          "gt": 1,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_yakult_china",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_pocari_cn",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_grape_ade_2",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_shin_3",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_ggul_4",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_jjondeugi_2",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        }
+      ]
+    },
+    "YOLO26n-product (학습)": {
+      "conf": 0.25,
+      "precision": 0.7142857142857143,
+      "recall": 0.8823529411764706,
+      "ap50": 0.8597462514417531,
+      "ms": 30.490199999555692,
+      "per_image": [
+        {
+          "image": "tray_demo",
+          "gt": 5,
+          "tp": 4,
+          "fp": 2
+        },
+        {
+          "image": "banana_a",
+          "gt": 4,
+          "tp": 4,
+          "fp": 0
+        },
+        {
+          "image": "cider_b",
+          "gt": 3,
+          "tp": 3,
+          "fp": 0
+        },
+        {
+          "image": "kimbap",
+          "gt": 1,
+          "tp": 0,
+          "fp": 2
+        },
+        {
+          "image": "chocopie_cn",
+          "gt": 1,
+          "tp": 1,
+          "fp": 1
+        },
+        {
+          "image": "te_yakult_china",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_pocari_cn",
+          "gt": 1,
+          "tp": 1,
+          "fp": 1
+        },
+        {
+          "image": "te_grape_ade_2",
+          "gt": 1,
+          "tp": 1,
+          "fp": 0
+        },
+        {
+          "image": "te_shin_3",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_ggul_4",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        },
+        {
+          "image": "te_jjondeugi_2",
+          "gt": 0,
+          "tp": 0,
+          "fp": 0
+        }
+      ]
+    }
+  }
+}
