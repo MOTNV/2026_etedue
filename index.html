@@ -729,7 +729,7 @@
         <ol class="pipe pipe-3">
           <li class="card"><span class="mono">01 · AUTO LABEL</span><h3>상품 오려 내기</h3><p>공개 사진 32장(상품 19장, 상품이 아닌 음식 13장)에서 YOLOE 마스크로 상품 32조각을 오려 내고, 사람이 확인해 25조각만 남겼습니다.</p><b class="num">25<small>조각</small></b></li>
           <li class="card"><span class="mono">02 · SYNTHESIZE</span><h3>학습 사진 합성</h3><p>무작위 배경 위에 상품 2~6개를 붙이고 음식 사진 조각을 방해물로 넣었습니다. 박스 라벨은 붙인 위치에서 자동 계산합니다.</p><b class="num">700<small>장</small></b></li>
-          <li class="card"><span class="mono">03 · TRAIN</span><h3>YOLO26n 전이학습</h3><p>COCO 사전학습 가중치에서 1클래스로 30에폭, 512px. 개발 PC CPU로 약 1시간 걸렸습니다.</p><b class="num">30<small>epoch</small></b></li>
+          <li class="card"><span class="mono">03 · TRAIN</span><h3>YOLO26n 전이학습</h3><p>COCO 사전학습 가중치에서 1클래스로 30에폭, 512px. 개발 PC CPU로 약 42분 걸렸습니다.</p><b class="num">30<small>epoch</small></b></li>
         </ol>
         <div class="table-wrap">
           <table>
@@ -751,7 +751,7 @@
         </div>
         <div class="verdict">
           <span class="mono">RESULT</span>
-          <p><b>상품 위치는 계속 YOLOE가 찾습니다.</b> 학습한 모델로 전체 파이프라인을 돌리면 합계가 3,700원(정답 4,300원)으로 틀렸습니다. 상품 조각 25개로는 다양성이 부족했기 때문입니다. 속도는 YOLOE보다 3배 빠르므로, PoC에서 실제 매장 트레이 사진 수백 장을 YOLOE로 자동 라벨링하고 사람이 검수해 다시 학습한 뒤, 같은 평가에서 YOLOE를 넘으면 바꿉니다.</p>
+          <p><b>상품 위치는 계속 YOLOE가 찾습니다.</b> 학습한 모델로 전체 파이프라인을 돌리면 합계가 3,700원(정답 4,300원)으로 틀렸습니다. 상품 조각 25개로는 다양성이 부족했기 때문입니다. 속도는 YOLOE보다 3배 빠르므로, PoC에서 실제 매장 트레이 사진 수백 장을 YOLOE로 자동 라벨링하고 사람이 검수해 다시 학습한 뒤, 같은 평가에서 YOLOE를 넘으면 바꿉니다. 자세한 내용은 <a href="docs/report.html?doc=training">모델 학습 결과 보고서</a>에 정리했습니다.</p>
         </div>
 
         <div class="verdict">
@@ -759,7 +759,7 @@
           <p><b>아직 남은 과제도 그대로 적었습니다.</b> 판정 기준은 공개 사진 5개로 정한 값이라 PoC 매장 사진으로 다시 맞춰야 합니다. CPU에서는 2.6초로 목표(1초)보다 느리고, 직접 학습한 검출기는 아직 YOLOE를 넘지 못했으며, YOLOE는 AGPL-3.0이라 상용 배포 전에 라이선스를 해결해야 합니다. 실습 사진은 Wikimedia Commons 자유 라이선스 사진을 합성했습니다 (<a href="docs/CREDITS.md">출처</a>).</p>
         </div>
         <div class="actions" style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
-          <a class="button" href="docs/report.html">모델 검토 보고서 읽기 →</a>
+          <a class="button" href="docs/report.html">모델 검토 보고서 읽기 →</a> <a class="button" href="docs/report.html?doc=training">모델 학습 결과 보고서 읽기 →</a>
           <a class="button ghost" href="https://github.com/MOTNV/2026_etedue/tree/main/src">소스 코드 (GitHub)</a>
         </div>
       </div>
@@ -1080,7 +1080,7 @@
       <div>
         <span class="logo"><span class="logo-mark">SG</span>SCAN&amp;GO <small>스캔앤고</small></span>
         <p>만든 사람: 임우진 · 나만의 피지컬 AI 제품 기획 과제</p>
-        <p class="foot-links"><a href="docs/report.html">모델 검토 보고서</a> · <a href="PRD/PRD.md">PRD</a> · <a href="https://github.com/MOTNV/2026_etedue">GitHub</a> · <a href="docs/CREDITS.md">사진 출처</a></p>
+        <p class="foot-links"><a href="docs/report.html">모델 검토 보고서</a> · <a href="docs/report.html?doc=training">모델 학습 결과 보고서</a> · <a href="PRD/PRD.md">PRD</a> · <a href="https://github.com/MOTNV/2026_etedue">GitHub</a> · <a href="docs/CREDITS.md">사진 출처</a></p>
       </div>
       <span class="mono">PRD v0.1 · 2026-10-06 · 모델 검토 2026-10-12</span>
     </div>

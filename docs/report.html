@@ -38,6 +38,10 @@
     hr { border: 0; }
     ul.contains-task-list, li.task-list-item { list-style: none; }
     .mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; overflow-x: auto; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tabs a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--muted); font-size: .9rem; font-weight: 600; background: var(--surface); }
+    .tabs a[aria-current="page"] { color: #fff; background: var(--primary); border-color: var(--primary); }
+    article img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
     .meta { color: var(--muted); font-size: .9rem; }
     .state { color: var(--muted); padding: 40px 0; }
     @media (prefers-color-scheme: dark) {
@@ -49,18 +53,29 @@
   </style>
 </head>
 <body>
-  <header><div class="in"><a href="../index.html">SCAN&amp;GO · 모델 검토 보고서</a><a class="back" href="../index.html#models">← 홈페이지</a></div></header>
+  <header><div class="in"><a href="../index.html">SCAN&amp;GO · 보고서</a><a class="back" href="../index.html#models">← 홈페이지</a></div></header>
   <main>
+    <nav class="tabs" aria-label="보고서 선택"><a id="tab-review" href="report.html">모델 검토 보고서</a><a id="tab-training" href="report.html?doc=training">모델 학습 결과 보고서</a></nav>
     <article id="doc"><p class="state">보고서를 불러오는 중…</p></article>
-    <p class="meta">원문: <a href="REPORT_zero-shot-models.md">REPORT_zero-shot-models.md</a> · 사진 출처: <a href="CREDITS.md">CREDITS.md</a></p>
+    <p class="meta">원문: <a id="src" href="REPORT_zero-shot-models.md">REPORT_zero-shot-models.md</a> · 사진 출처: <a href="CREDITS.md">CREDITS.md</a></p>
   </main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script>
     (async function () {
       var el = document.getElementById('doc');
+      var DOCS = {
+        review: { file: 'REPORT_zero-shot-models.md', title: '모델 검토 보고서' },
+        training: { file: 'REPORT_training.md', title: '모델 학습 결과 보고서' }
+      };
+      var key = new URLSearchParams(location.search).get('doc');
+      if (!DOCS[key]) key = 'review';
+      var d = DOCS[key], src = document.getElementById('src');
+      document.title = d.title + ' | 스캔앤고';
+      document.getElementById('tab-' + key).setAttribute('aria-current', 'page');
+      src.href = d.file; src.textContent = d.file;
       try {
-        var md = await (await fetch('REPORT_zero-shot-models.md', { cache: 'no-cache' })).text();
+        var md = await (await fetch(d.file, { cache: 'no-cache' })).text();
         el.innerHTML = marked.parse(md, { gfm: true });
         // 표는 가로 스크롤 래퍼로 감싼다
         el.querySelectorAll('table').forEach(function (t) {
@@ -76,7 +91,7 @@
         mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
         await mermaid.run();
       } catch (e) {
-        el.innerHTML = '<p class="state">보고서를 불러오지 못했습니다. <a href="REPORT_zero-shot-models.md">원문 보기</a></p>';
+        el.innerHTML = '<p class="state">보고서를 불러오지 못했습니다. <a href="' + d.file + '">원문 보기</a></p>';
       }
     })();
   </script>
