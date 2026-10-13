@@ -56,6 +56,13 @@ python src/scan_and_go.py --detector product   # 학습한 검출기로 전체 �
 python src/register_product.py --add KIMBAP_TUNA "삼각김밥 참치마요" 1500 참치 김밥 --images 사진1.jpg 사진2.jpg
 ```
 
+## 사용자 로그인 (Supabase)
+
+홈페이지와 보고서 페이지 오른쪽 위에 이메일 + 비밀번호 로그인이 있습니다 (`auth.js`). 로그인은 표시만 하고, 내용은 누구나 볼 수 있습니다.
+
+1. Supabase 대시보드 → Project Settings → API에서 **Project URL**과 **anon(public) 키**를 `auth-config.js`에 넣습니다. service_role 키는 넣지 않습니다.
+2. Authentication → URL Configuration에서 **Site URL**을 `https://motnv.github.io/2026_etedue/`로, **Redirect URLs**에 `https://motnv.github.io/2026_etedue/**`를 추가합니다 (가입 확인·비밀번호 재설정 메일 링크용).
+
 ## 폴더 구성
 
 ```

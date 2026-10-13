@@ -38,6 +38,7 @@
     hr { border: 0; }
     ul.contains-task-list, li.task-list-item { list-style: none; }
     .mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; overflow-x: auto; }
+    header .hr { display: flex; align-items: center; gap: 14px; }
     .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
     .tabs a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--muted); font-size: .9rem; font-weight: 600; background: var(--surface); }
     .tabs a[aria-current="page"] { color: #fff; background: var(--primary); border-color: var(--primary); }
@@ -53,7 +54,7 @@
   </style>
 </head>
 <body>
-  <header><div class="in"><a href="../index.html">SCAN&amp;GO · 보고서</a><a class="back" href="../index.html#models">← 홈페이지</a></div></header>
+  <header><div class="in"><a href="../index.html">SCAN&amp;GO · 보고서</a><span class="hr"><a class="back" href="../index.html#models">← 홈페이지</a><span id="auth-slot"></span></span></div></header>
   <main>
     <nav class="tabs" aria-label="보고서 선택"><a id="tab-review" href="report.html">모델 검토 보고서</a><a id="tab-training" href="report.html?doc=training">모델 학습 결과 보고서</a></nav>
     <article id="doc"><p class="state">보고서를 불러오는 중…</p></article>
@@ -95,5 +96,8 @@
       }
     })();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="../auth-config.js"></script>
+  <script src="../auth.js"></script>
 </body>
 </html>

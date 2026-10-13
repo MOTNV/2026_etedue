@@ -433,6 +433,7 @@
 
     /* ----- 검증 계획 (PoC) ----- */
     .poc { margin-top: 44px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 24px; align-items: start; }
+    .poc > * { min-width: 0; }
     .poc-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
     .poc-facts div { background: var(--surface); padding: 18px 20px; }
     .poc-facts .mono { font-size: .66rem; color: var(--muted); }
@@ -551,6 +552,7 @@
         <li><a href="#poc">검증 계획</a></li>
         <li><a href="docs/report.html">보고서</a></li>
       </ul>
+      <span id="auth-slot"></span>
     </nav>
   </header>
 
@@ -1349,5 +1351,9 @@
       hit.addEventListener('pointerleave', hide);
     })();
   </script>
+  <!-- 사용자 로그인 (Supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth-config.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>
